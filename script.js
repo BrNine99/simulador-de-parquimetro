@@ -1,16 +1,23 @@
 // Regras de Negócio
 
 class Parquimetro {
+    #valorInserido;
+
     constructor(valorInserido){
-        this.valorInserido = valorInserido;
+        // Validando o valor recebido
+        if (!Number.isFinite(valorInserido) || valorInserido < 0) {
+            throw new Error("Valor de pagamento inválido.");
+        }
+
+        this.#valorInserido = Math.round(valorInserido * 100); // Convertendo o pagamento em centavos
     }
     
     calcularTempo() {
-        if(this.valorInserido < 1){
+        if(this.#valorInserido < 100){
             return "Valor Insuficiente";
-        } else if(this.valorInserido < 1.75){
+        } else if(this.#valorInserido < 175){
             return 30;
-        } else if(this.valorInserido < 3){
+        } else if(this.#valorInserido < 300){
             return 60;
         } else {
             return 120;
@@ -27,14 +34,16 @@ class Parquimetro {
         let tarifa = 0;
 
         if(tempo === 30){
-            tarifa = 1;
+            tarifa = 100;
         } else if(tempo === 60){
-            tarifa = 1.75;
+            tarifa = 175;
         } else {
-            tarifa = 3;
+            tarifa = 300;
         }
 
-        return this.valorInserido - tarifa;
+        const trocoCentavos = this.#valorInserido - tarifa;
+
+        return trocoCentavos / 100; // devolve o resultado em reais
     }
 }
 
@@ -78,4 +87,10 @@ formulario.addEventListener("submit", function(event){
     resultadoTroco.textContent = formataMoeda.format(troco);
 
     mensagemResultado.textContent = "Pagamento calculado com sucesso!";
+
+    const limpaCampo = () => {
+        inputValor.value = "";
+    }
+
+    limpaCampo();
 });
