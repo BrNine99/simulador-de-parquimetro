@@ -1,3 +1,5 @@
+// Regras de Negócio
+
 class Parquimetro {
     constructor(valorInserido){
         this.valorInserido = valorInserido;
@@ -36,4 +38,18 @@ class Parquimetro {
     }
 }
 
-const parquimetro = new Parquimetro();
+// Manipulação do DOM
+
+const formulario = document.getElementById("form-parquimetro");
+const inputValor = document.getElementById("valor-inserido");
+
+formulario.addEventListener("submit", function(event){
+    event.preventDefault(); //Impede carregamento da pagina
+
+    const valorInserido = Number(inputValor.value);
+
+    const parquimetro = new Parquimetro(valorInserido);
+
+    console.log("Tempo:", parquimetro.calcularTempo());
+    console.log("Troco:", parquimetro.calcularTroco());
+});
