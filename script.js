@@ -93,11 +93,7 @@ formulario.addEventListener("submit", function(event){
 
         mensagemResultado.textContent = "Pagamento calculado com sucesso!";
 
-        const limpaCampo = () => {
-            inputValor.value = "";
-        }
-
-        limpaCampo();
+        inputValor.value = "";        
         
     } catch (error) {
         resultadoTempo.textContent = "--";
