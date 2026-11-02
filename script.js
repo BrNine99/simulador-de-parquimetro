@@ -60,37 +60,48 @@ const mensagemResultado = document.getElementById("mensagem-resultado");
 formulario.addEventListener("submit", function(event){
     event.preventDefault(); //Impede carregamento da pagina
 
-    const valorInserido = Number(inputValor.value);
+    try {
+        const valorInserido = Number(inputValor.value);
 
-    // Nova instância da classe Parquimetro
-    const parquimetro = new Parquimetro(valorInserido);
+        if (!Number.isFinite(valorInserido) || valorInserido < 0) {
+            throw new Error("Informe um valor válido.");
+        }
 
-    const tempo = parquimetro.calcularTempo();
-    const troco = parquimetro.calcularTroco();
+        // Nova instância da classe Parquimetro
+        const parquimetro = new Parquimetro(valorInserido);
 
-    // Tratando o pagamento insuficiente
-    if(tempo === "Valor Insuficiente") {
+        const tempo = parquimetro.calcularTempo();
+        const troco = parquimetro.calcularTroco();
+
+        // Tratando o pagamento insuficiente
+        if(tempo === "Valor Insuficiente") {
+            resultadoTempo.textContent = "--";
+            resultadoTroco.textContent = "--";
+            mensagemResultado.textContent = "Valor insuficiente para estacionar.";
+            return;
+        }
+
+        // Tratando os pagamentos válidos
+        resultadoTempo.textContent = `${tempo} minutos`;
+
+        const formataMoeda = new Intl.NumberFormat("pt-BR", {
+            style: "currency",
+            currency: "BRL"
+        });
+
+        resultadoTroco.textContent = formataMoeda.format(troco);
+
+        mensagemResultado.textContent = "Pagamento calculado com sucesso!";
+
+        const limpaCampo = () => {
+            inputValor.value = "";
+        }
+
+        limpaCampo();
+        
+    } catch (error) {
         resultadoTempo.textContent = "--";
         resultadoTroco.textContent = "--";
-        mensagemResultado.textContent = "Valor insuficiente para estacionar.";
-        return;
-    }
-
-    // Tratando os pagamentos válidos
-    resultadoTempo.textContent = `${tempo} minutos`;
-
-    const formataMoeda = new Intl.NumberFormat("pt-BR", {
-        style: "currency",
-        currency: "BRL"
-    });
-
-    resultadoTroco.textContent = formataMoeda.format(troco);
-
-    mensagemResultado.textContent = "Pagamento calculado com sucesso!";
-
-    const limpaCampo = () => {
-        inputValor.value = "";
-    }
-
-    limpaCampo();
+        mensagemResultado.textContent = error.message;        
+    }    
 });
