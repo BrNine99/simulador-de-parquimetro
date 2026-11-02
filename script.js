@@ -3,6 +3,13 @@
 class Parquimetro {
     #valorInserido;
 
+    // Criando uma estrutura para armazenar as tarifas        
+    #tarifas = [
+        { valor: 100, tempo: 30 },
+        { valor: 175, tempo: 60 },
+        { valor: 300, tempo: 120 }
+    ];
+
     constructor(valorInserido){
         // Validando o valor recebido
         if (!Number.isFinite(valorInserido) || valorInserido < 0) {
@@ -11,39 +18,40 @@ class Parquimetro {
 
         this.#valorInserido = Math.round(valorInserido * 100); // Convertendo o pagamento em centavos
     }
+
+    // Criando um método para identificar a tarifa aplicável        
+    #obterTarifa() {
+        let tarifaSelecionada = null; // cria variável para armazenar a tarifa encontrada.
+
+        for (const tarifa of this.#tarifas) {
+            if (this.#valorInserido >= tarifa.valor) {
+                tarifaSelecionada = tarifa;
+            }
+        }
+
+        return tarifaSelecionada;
+    }
     
     calcularTempo() {
-        if(this.#valorInserido < 100){
+        const tarifa = this.#obterTarifa();
+
+        if (tarifa === null) {
             return "Valor Insuficiente";
-        } else if(this.#valorInserido < 175){
-            return 30;
-        } else if(this.#valorInserido < 300){
-            return 60;
-        } else {
-            return 120;
         }
+
+        return tarifa.tempo;
     }
 
     calcularTroco() {
-        const tempo = this.calcularTempo();
+        const tarifa = this.#obterTarifa();
 
-        if(tempo === "Valor Insuficiente"){
+        if (tarifa === null) {
             return 0;
         }
 
-        let tarifa = 0;
+        const trocoCentavos = this.#valorInserido - tarifa.valor;
 
-        if(tempo === 30){
-            tarifa = 100;
-        } else if(tempo === 60){
-            tarifa = 175;
-        } else {
-            tarifa = 300;
-        }
-
-        const trocoCentavos = this.#valorInserido - tarifa;
-
-        return trocoCentavos / 100; // devolve o resultado em reais
+        return trocoCentavos / 100; // Convertendo o pagamento em reais.
     }
 }
 
