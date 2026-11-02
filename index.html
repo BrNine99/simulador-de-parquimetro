@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador de Parquímetro</title>
+</head>
+
+<body>
+    <header>
+        <h1>Simulador de Parquímetro</h1>
+        <p>Calcule seu tempo de estacionamento de acordo com o valor inserido.</p>
+    </header>
+
+    <main>
+        <section id="tabela-tarifas">
+            <h2>Tabela de Tarifas</h2>
+
+            <table>
+                <caption>Valores e tempos disponíveis para estacionamento</caption>
+
+                <thead>
+                    <tr>
+                        <th scope="col">Valor</th>
+                        <th scope="col">Tempo</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td>R$ 1,00</td>
+                        <td>30 Minutos</td>
+                    </tr>
+
+                    <tr>
+                        <td>R$ 1,75</td>
+                        <td>60 Minutos</td>
+                    </tr>
+
+                    <tr>
+                        <td>R$ 3,00</td>
+                        <td>120 Minutos</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p>Tempo máximo permitido: 120 Minutos.</p>
+        </section>
+
+        <section id="secao-pagamento">
+            <h2>Pagamento</h2>
+
+            <form id="form-parquimetro">
+                <div>
+                    <label for="valor-inserido">Valor inserido (R$):</label>
+
+                    <input 
+                    type="number" 
+                    id="valor-inserido" 
+                    name="valorInserido" 
+                    min="0.01" 
+                    step="0.01" 
+                    placeholder="Ex.: 2.50" 
+                    required>
+                </div>
+
+                <button type="submit">Calcular estacionamento</button>
+            </form>
+        </section>
+
+        <section id="resultado">
+            <h2>Resultado</h2>
+
+            <p>
+                Tempo de estacionamento: 
+                <output id="tempo-estacionamento">--</output>
+            </p>
+
+            <p>
+                Troco:
+                <output id="troco">--</output>
+            </p>
+
+            <p id="mensagem-resultado"></p>
+        </section>
+    </main>
+
+    <footer>
+        <p>Simulador de Parquímetro - Exercício de JavaScript e POO</p>
+    </footer>
+    
+</body>
+</html>
