@@ -38,18 +38,44 @@ class Parquimetro {
     }
 }
 
-// Manipulação do DOM
+// Obter Elementos HTML
 
 const formulario = document.getElementById("form-parquimetro");
 const inputValor = document.getElementById("valor-inserido");
+const resultadoTempo = document.getElementById("tempo-estacionamento");
+const resultadoTroco = document.getElementById("troco");
+const mensagemResultado = document.getElementById("mensagem-resultado");
+
+// Manipulação do DOM
 
 formulario.addEventListener("submit", function(event){
     event.preventDefault(); //Impede carregamento da pagina
 
     const valorInserido = Number(inputValor.value);
 
+    // Nova instância da classe Parquimetro
     const parquimetro = new Parquimetro(valorInserido);
 
-    console.log("Tempo:", parquimetro.calcularTempo());
-    console.log("Troco:", parquimetro.calcularTroco());
+    const tempo = parquimetro.calcularTempo();
+    const troco = parquimetro.calcularTroco();
+
+    // Tratando o pagamento insuficiente
+    if(tempo === "Valor Insuficiente") {
+        resultadoTempo.textContent = "--";
+        resultadoTroco.textContent = "--";
+        mensagemResultado.textContent = "Valor insuficiente para estacionar.";
+        return;
+    }
+
+    // Tratando os pagamentos válidos
+    resultadoTempo.textContent = `${tempo} minutos`;
+
+    const formataMoeda = new Intl.NumberFormat("pt-BR", {
+        style: "currency",
+        currency: "BRL"
+    });
+
+    resultadoTroco.textContent = formataMoeda.format(troco);
+
+    mensagemResultado.textContent = "Pagamento calculado com sucesso!";
 });
